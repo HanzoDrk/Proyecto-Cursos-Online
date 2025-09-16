@@ -86,3 +86,24 @@ class Curso:
 
     def agregar_tarea(self, tarea):
         self.tareas.append(tarea)
+
+    def to_dict(self):
+        return {
+            "nombre" : self.nombre,
+            "descripcion" : self.descripcion,
+            "instructor" : self.instructor,
+            "codigo" : self.codigo,
+            "estudiantes" : self.estudiantes,
+            "evaluaciones" : self.evaluaciones
+        }
+    
+    @classmethod
+    def from_dict(cls, data):
+        return cls(
+            nombre=data["nombre"],
+            descripcion=data["descripcion"],
+            instructor=data["instructor"],
+            codigo=data["codigo"],
+            estudiantes=data["estudiantes"],
+            evaluaciones=data["evaluacioens"]
+        )

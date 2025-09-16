@@ -62,6 +62,23 @@ class Evaluacion(ABC):
         else:
             info += "No hay calificaciones registradas.\n"
         return info
+    
+    def to_dict(self):
+        return {
+            "titulo" : self.titulo,
+            "descripcion" : self.descripcion,
+            "fecha_entrega" : self.fecha_entrega,
+            "calificacion" : self.calificacion
+        }
+    
+    @classmethod
+    def from_dict(cls, data):
+        return cls(
+            titulo=data["titulo"],
+            descripcion=data["descripcion"],
+            fecha_entrega=data["fecha_entrega"],
+            calificacion=data["calificacion"]
+        )
 
 class Tarea(Evaluacion):
     def __init__(self, titulo, descripcion, fecha_entrega):

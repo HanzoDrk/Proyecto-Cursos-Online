@@ -67,6 +67,15 @@ class Usuario(ABC):
         nuevo_id = f"{prefijo}{cls._contadores[prefijo.upper()]:03d}"
         cls._contadores[prefijo.upper()] += 1
         return nuevo_id
+    
+    def to_dict(self):
+        return {
+            "id_usuario": self.id_usuario,
+            "nombre": self.nombre,
+            "correo": self.correo,
+            "contrasenia": self.contrasenia,
+            "rol": self.rol
+        }
 
 class Estudiante(Usuario):
     def __init__(self, nombre, correo, contrasenia):
