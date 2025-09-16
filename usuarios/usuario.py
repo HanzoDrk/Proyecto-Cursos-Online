@@ -12,7 +12,7 @@ class Usuario(ABC):
         self.correo = correo
         self.rol = rol
         self.contrasenia = contrasenia
-        self.id_usuario = self._generar_id(prefijo) 
+        self.id_usuario = self._generar_id(prefijo)
  
     @property
     def nombre(self):
@@ -75,9 +75,15 @@ class Estudiante(Usuario):
     def mostrar_informacion(self):
         return f"ID: {self.id_usuario}, Nombre: {self.nombre}, Correo: {self.correo}, Rol: {self.rol}"
     
+    def inscribir_curso(self, curso):
+        curso.agregar_estudiante(self)
+        print(f"Estudiante {self.nombre} inscrito en el curso {curso.nombre}.")
+
+    
 class Instructor(Usuario):
     def __init__(self, nombre, correo, contrasenia):
         super().__init__(nombre, correo, "Instructor", contrasenia, prefijo="I")
 
     def mostrar_informacion(self):
         return f"ID: {self.id_usuario}, Nombre: {self.nombre}, Correo: {self.correo}, Rol: {self.rol}"
+    

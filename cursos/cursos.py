@@ -10,7 +10,7 @@ class Curso:
         self.codigo = codigo
         self.estudiantes = []
         self.evaluaciones = []
-        self.tareas = []
+
 
     @property
     def nombre(self):
@@ -86,4 +86,3 @@ class Curso:
 
     def agregar_tarea(self, tarea):
         self.tareas.append(tarea)
-
