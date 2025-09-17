@@ -5,10 +5,11 @@ class Evaluacion(ABC):
         self.__titulo = None
         self.__descripcion = None
         self.__fecha_entrega = None
+
         self.titulo = titulo
         self.descripcion = descripcion
         self.fecha_entrega = fecha_entrega
-        self.calificacion = []
+        self.calificaciones = []
 
     @property
     def titulo(self):
@@ -16,10 +17,9 @@ class Evaluacion(ABC):
     
     @titulo.setter
     def titulo(self, valor):
-        if not valor or not str(valor):
+        if not valor or not valor.strip():
             raise ValueError("El título no puede estar vacío.")
-        else:
-            self.__titulo = str(valor)
+        self.__titulo = str(valor)
 
     @property
     def descripcion(self):
@@ -27,10 +27,9 @@ class Evaluacion(ABC):
     
     @descripcion.setter
     def descripcion(self, valor):
-        if not valor or not str(valor):
+        if not valor or not valor.strip():
             raise ValueError("La descripción no puede estar vacía.")
-        else:
-            self.__descripcion = str(valor)
+        self.__descripcion = str(valor)
 
     @property
     def fecha_entrega(self):
@@ -38,48 +37,50 @@ class Evaluacion(ABC):
     
     @fecha_entrega.setter
     def fecha_entrega(self, valor):
-        if not valor or not str(valor):
+        if not valor or not valor.strip(): 
             raise ValueError("La fecha de entrega no puede estar vacía.")
-        else:
-            self.__fecha_entrega = str(valor)
+        self.__fecha_entrega = str(valor)
 
     @abstractclassmethod
     def tipo(self):
         pass
 
-    def regitrar_calificacion(self, estudiante, calificacion):
-        if calificacion < 0 or calificacion > 100:
+    def registrar_calificacion(self, estudiante_id, nota):
+        if not ( 0 <= nota <= 100):
             raise ValueError("La calificación debe estar entre 0 y 100.")
-        self.calificacion.append((estudiante, calificacion))
-        print(f"Calificación {calificacion} registrada para el estudiante {estudiante.nombre} en la evaluación {self.titulo}.")
+        
+        for cali in self.calificaciones:
+            if cali["estudiantes_id"] == estudiante_id:
+                cali["nota"] == nota
+                print(f"Calificación del estudiante ID {estudiante_id} actualizada a {nota}.")
+                return
+            
+        self.calificaciones.append({"estudiante_id": estudiante_id, "nota": nota})
+        print(f"Calificación {nota} registrada para el estudiante ID {estudiante_id}.")
+
 
     def mostrar_informacion(self):
-        info = f"Título: {self.titulo}\nDescripción: {self.descripcion}\nFecha de Entrega: {self.fecha_entrega}\nTipo: {self.tipo()}\n"
-        if self.calificacion:
+        info =(f"Título: {self.titulo} (Tipo: {self.tipo()})\n"
+                f"  Descripción: {self.descripcion}\n"
+                f"  Fecha de Entrega: {self.fecha_entrega}\n")
+        
+        if self.calificaciones:
             info += "Calificaciones:\n"
-            for estudiante, calificacion in self.calificacion:
-                info += f"- {estudiante.nombre}: {calificacion}\n"
+            for cali in self.calificaciones:
+                info += f"- Estudiante ID {cali['estudiante_id']}: {cali['nota']}\n"
         else:
             info += "No hay calificaciones registradas.\n"
         return info
     
     def to_dict(self):
         return {
-            "titulo" : self.titulo,
-            "descripcion" : self.descripcion,
-            "fecha_entrega" : self.fecha_entrega,
-            "calificacion" : self.calificacion
+            "tipo": self.tipo(), 
+            "titulo": self.titulo,
+            "descripcion": self.descripcion,
+            "fecha_entrega": self.fecha_entrega,
+            "calificaciones": self.calificaciones
         }
     
-    @classmethod
-    def from_dict(cls, data):
-        return cls(
-            titulo=data["titulo"],
-            descripcion=data["descripcion"],
-            fecha_entrega=data["fecha_entrega"],
-            calificacion=data["calificacion"]
-        )
-
 class Tarea(Evaluacion):
     def __init__(self, titulo, descripcion, fecha_entrega):
         super().__init__(titulo, descripcion, fecha_entrega)
@@ -99,4 +100,3 @@ class Examen(Evaluacion):
     
     def __str__(self):
         return f"Examen: {self.titulo}, Fecha de Entrega: {self.fecha_entrega}"
-

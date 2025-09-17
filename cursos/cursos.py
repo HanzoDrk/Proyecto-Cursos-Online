@@ -62,6 +62,10 @@ class Curso:
         else:
             raise ValueError(f"El estudiante {estudiante.nombre} ya esta en el curso {self.nombre}")
         
+    def agregar_evaluacion(self, evaluacion):
+        self.evaluaciones.append(evaluacion)
+        print(f"Evaluacion {evaluacion.nombre}, agregada al curso {self.nombre}")
+        
     def eliminar_estudiante(self, estudiante):
         if estudiante in self.estudiantes:
             self.estudiantes.remove(estudiante)
