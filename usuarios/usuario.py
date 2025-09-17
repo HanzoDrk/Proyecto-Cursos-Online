@@ -84,10 +84,6 @@ class Estudiante(Usuario):
     def mostrar_informacion(self):
         return f"ID: {self.id_usuario}, Nombre: {self.nombre}, Correo: {self.correo}, Rol: {self.rol}"
     
-    def inscribir_curso(self, curso):
-        curso.agregar_estudiante(self)
-        print(f"Estudiante {self.nombre} inscrito en el curso {curso.nombre}.")
-
     
 class Instructor(Usuario):
     def __init__(self, nombre, correo, contrasenia):
