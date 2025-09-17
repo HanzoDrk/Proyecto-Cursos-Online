@@ -6,9 +6,9 @@ import os
 
 class Sistema:
     def __init__(self):
-        self.gestor_usuario = GestorUsuarios()
-        self.gestor_curso = GestorCursos()
-        self.gestor_evaluaciones = GestorEvaluaciones
+        self.gestor_usuarios = GestorUsuarios()
+        self.gestor_cursos = GestorCursos(self.gestor_usuarios) #error al momento de iniciar el programa, faltaba lo que esta adentro del parentesis.
+        self.gestor_evaluaciones = GestorEvaluaciones(self.gestor_cursos, self.gestor_usuarios) #Error al incicar el programa, faltaban lo que esta adentro del parentesis.
         self.usuario_actual = None
 
     def limpiar(self):
