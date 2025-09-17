@@ -4,6 +4,7 @@ class Curso:
         self.__descripcion = None
         self.__instructor = None
         self.__codigo = None
+
         self.nombre = nombre
         self.descripcion = descripcion
         self.instructor = instructor
@@ -18,10 +19,9 @@ class Curso:
     
     @nombre.setter
     def nombre(self, valor):
-        if not valor or not str(valor):
+        if not valor or not valor.strip():
             raise ValueError("El nombre del curso no puede estar vacío.")
-        else:
-            self.__nombre = str(valor)
+        self.__nombre = str(valor)
             
     @property
     def descripcion(self):
@@ -30,7 +30,6 @@ class Curso:
     @descripcion.setter
     def descripcion(self, valor):
         if not valor or not str(valor.strip()):
-            print("No hay descripcion del curso, se agregara sin-descripcion.")
             self.__descripcion = "Sin-descripcion"
         else:
             self.__descripcion = str(valor.strip())
@@ -41,10 +40,10 @@ class Curso:
     
     @instructor.setter
     def instructor(self, valor):
-        if not valor or not str(valor):
-            raise ValueError("El instructor no puede estar vacío.")
-        else:
+        if valor is None:
             self.__instructor = valor
+            return
+        self.__instructor = valor
 
     @property
     def codigo(self):
@@ -54,56 +53,50 @@ class Curso:
     def codigo(self, valor):
         if not valor or not str(valor):
             raise ValueError("El codigo del curso no puede estar vacio.")
-        else:
-            self.__codigo = str(valor)
-
-    def mostrar_informacion(self):
-        info = f"Curso: {self.nombre}\n"
-        info += f"Descripción: {self.descripcion}\n"
-        info += f"Instructor: {self.instructor.nombre}\n"
-        info += f"Código: {self.codigo}\n"
-        info += f"Número de estudiantes inscritos: {len(self.estudiantes)}\n"
-        return info 
-    
+        self.__codigo = str(valor)
+   
     def agregar_estudiante(self, estudiante):
         if estudiante not in self.estudiantes:
             self.estudiantes.append(estudiante)
             print(f"Estudiante {estudiante.nombre} agregado al curso {self.nombre}.")
         else:
-            raise Exception(f"El estudiante {estudiante.nombre} ya esta en el curso {self.nombre}")
+            raise ValueError(f"El estudiante {estudiante.nombre} ya esta en el curso {self.nombre}")
+        
+    def eliminar_estudiante(self, estudiante):
+        if estudiante in self.estudiantes:
+            self.estudiantes.remove(estudiante)
+            print(f"El estudiante {estudiante.nombre} se elimino correctamente")
+        else:
+            raise ValueError(f"El estudainte {estudiante.nombre} no se encuentra en este curso")
+
+    def mostrar_info(self):
+        nombre_instructor = self.instructor.nombre if self.instructor else "no asignado"
+        info = (f"Curso: {self.nombre} (Código: {self.codigo})\n"
+                f"  Descripción: {self.descripcion}\n"
+                f"  Instructor: {nombre_instructor}\n"
+                f"  Estudiantes inscritos: {len(self.estudiantes)}")
+        return info 
 
     def mostrar_estudiantes(self):
         if not self.estudiantes:
             return "No hay estudiantes inscritos en este curso."
+        
         linea = []
         for estudiante in self.estudiantes:
-            lineas = f"- {estudiante.nombre} (ID: {estudiante.id_usuario}, Correo: {estudiante.correo})"
-            linea.append(lineas)
+            estudiantes_info = f"- {estudiante.nombre} (ID: {estudiante.id_usuario}, Correo: {estudiante.correo})"
+            linea.append(estudiantes_info)
         return "\n".join(linea)
     
-    def agregar_evaluacion(self, evaluacion):
-        self.evaluaciones.append(evaluacion)
-
-    def agregar_tarea(self, tarea):
-        self.tareas.append(tarea)
-
+    def __str__(self):
+        return self.mostrar_info()
+    
     def to_dict(self):
         return {
             "nombre" : self.nombre,
             "descripcion" : self.descripcion,
-            "instructor" : self.instructor,
             "codigo" : self.codigo,
-            "estudiantes" : self.estudiantes,
-            "evaluaciones" : self.evaluaciones
+            "instructor_id" : self.instructor.id_usuario if self.instructor else None,
+            "estudiante_ids" : [est.id_usuario for est in self.estudiantes],
+            "evaluaciones" : [eval.to_dict() for eval in self.evaluaciones]
         }
     
-    @classmethod
-    def from_dict(cls, data):
-        return cls(
-            nombre=data["nombre"],
-            descripcion=data["descripcion"],
-            instructor=data["instructor"],
-            codigo=data["codigo"],
-            estudiantes=data["estudiantes"],
-            evaluaciones=data["evaluacioens"]
-        )

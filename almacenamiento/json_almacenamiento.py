@@ -2,7 +2,7 @@ import json
 import os
 
 def guardar_datos(ruta_archivo, datos): #Guardar datos en un archivo json
-    with open(ruta_archivo, 'w', encoding='utf=8') as archivo:
+    with open(ruta_archivo, 'w', encoding='utf-8') as archivo:
         json.dump(datos, archivo, indent=4, ensure_ascii=False)
 
 def cargar_datos(ruta_archivo): #Cargar datos desde un archivo json

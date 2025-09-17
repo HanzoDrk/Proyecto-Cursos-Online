@@ -1,15 +1,19 @@
 import os
 from almacenamiento.json_almacenamiento import guardar_datos, cargar_datos
-from usuarios.usuario import Usuario, Estudiante, Instructor
+from usuarios.usuario import Estudiante, Instructor
 
-RUTA_ARCHIVO = os.path.join("data_manager", "usuarios.json")
+RUTA_ARCHIVO = os.path.join("almacenamiento", "usuarios.json")
 
 class GestorUsuarios:
     def __init__(self):
         self.usuarios = []
         self.cargar()
 
-    def crear_usuario(self,tipo, nombre, correo, contrasenia):
+    def crear_usuario(self, tipo, nombre, correo, contrasenia):
+        if self.buscar_usuario(correo):
+            print(f"Error: el correo: {correo}, ya esta registrado")
+            return None
+
         if tipo.lower() == "estudiante":
             nuevo_usuario = Estudiante(nombre, correo, contrasenia)
         elif tipo.lower() == "instructor":
@@ -17,13 +21,20 @@ class GestorUsuarios:
         else:
             raise ValueError("Tipo de usuario no válido.")
             
-        self.usuarios.append(nuevo_usuario.to_dict())
+        self.usuarios.append(nuevo_usuario)
         print(f"Usuario {nuevo_usuario.nombre} Creado. Id: {nuevo_usuario.id_usuario}")
+        return nuevo_usuario
             
     def buscar_usuario(self,correo):
         for usuario in self.usuarios:
             if usuario.correo == correo:
                 return usuario
+        return None
+    
+    def buscar_usuario_id(self, usuario_id):
+        for usuario in self.usuarios:
+            if usuario.id_usuarios == usuario_id:
+                return usuario_id
         return None
 
     def mostrar_usuarios(self):
@@ -35,13 +46,32 @@ class GestorUsuarios:
         return "\n".join(lineas)
 
     def eliminar_usuario(self,correo):
-        usuario = buscar_usuario(self,correo)
-        if usuario:
-            self.usuarios.remove(usuario.to_dict())
-            print(f"Usuario {usuario.nombre} se eliminó correctamente.")
+        usuario_eliminar = self.buscar_usuario(correo)
+        if usuario_eliminar:
+            self.usuarios.remove(usuario_eliminar)
+            print(f"Usuario {usuario_eliminar.nombre} se eliminó correctamente.")
+        else:
+            print(f"Error: No se encontro un usuario con el correo proporcionado")
 
     def guardar(self):
-        guardar_datos(RUTA_ARCHIVO, self.usuarios)
+        usuarios_dict = [usuario.to_dict() for usuario in self.usuarios]
+        guardar_datos(RUTA_ARCHIVO, usuarios_dict)
+        print("Datos guardados correctamente")
 
     def cargar(self):
-        self.usuarios = cargar_datos(RUTA_ARCHIVO)
+        try:
+            datos_cargados = cargar_datos(RUTA_ARCHIVO)
+            self.usuarios = []
+            for data in datos_cargados:
+                if data["rol"].lower() == "estudiante":
+                    usuario = Estudiante(data["nombre"], data["correo"], data["contrasenia"])
+                elif data["rol"].lower() == "instructor":
+                    usuario = Instructor(data["nombre"], data["correo"], data["contrasenia"])
+                else:
+                    continue
+
+                usuario.id_usuario = data ["id_usuario"]
+                self.usuarios.append(usuario)
+        except FileNotFoundError:
+            print("no se encontro el archivo, se creara una lista vacia.")
+            self.usuarios = []

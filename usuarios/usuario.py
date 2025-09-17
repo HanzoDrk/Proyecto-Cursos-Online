@@ -20,7 +20,7 @@ class Usuario(ABC):
     
     @nombre.setter
     def nombre(self, valor):
-        if not valor or not str(valor):
+        if not valor:
             raise ValueError("EL nombre no puede estar vacío.")
         else:
             self.__nombre = str(valor)
@@ -31,7 +31,7 @@ class Usuario(ABC):
     
     @correo.setter
     def correo(self, valor):
-        if not valor or not str(valor):
+        if not valor:
             raise ValueError("El correo no puede estar vacío.")
         else:
             self.__correo = str(valor)
@@ -42,7 +42,7 @@ class Usuario(ABC):
     
     @rol.setter
     def rol(self, valor):
-        if not valor or not str(valor):
+        if not valor:
             raise ValueError("El rol no puede estar vacío.")
         else:
             self.__rol = str(valor)
