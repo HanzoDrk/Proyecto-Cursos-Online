@@ -2,7 +2,7 @@ from abc import ABC, abstractclassmethod
 
 class Usuario(ABC):
     _contadores = {"U": 1, "E": 1, "I": 1} 
-     
+    
     def __init__(self, nombre, correo, rol, contrasenia, prefijo="U"):
         self.__nombre = None
         self.__correo = None
@@ -13,7 +13,7 @@ class Usuario(ABC):
         self.rol = rol
         self.contrasenia = contrasenia
         self.id_usuario = self._generar_id(prefijo)
- 
+
     @property
     def nombre(self):
         return self.__nombre

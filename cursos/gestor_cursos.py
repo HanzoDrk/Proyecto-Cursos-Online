@@ -56,7 +56,7 @@ class GestorCursos:
             print(f"Error: No existe un curso con el codigo {codigo_curso}")
             return None
         
-        estudiante = self.gestor_usuarios.buscar_usuario_por_id(id_estudiante)
+        estudiante = self.gestor_usuarios.buscar_usuario_id(id_estudiante)  #No existe ninguna funcion llamada buscar_usuario_por_Id
         if not estudiante or estudiante.rol != "Estudiante":
             print(f"Error: No se encontró un estudiante con el ID '{id_estudiante}'.")
             return
@@ -81,7 +81,7 @@ class GestorCursos:
                 curso = Curso(data["nombre"], data["descripcion"], instructor, data["codigo"])
 
                 for estu_id in data["estudiantes_id"]:
-                    estudiante = self.gestor_usuarios.buscar_usuario_por_id(estu_id)
+                    estudiante = self.gestor_usuarios.buscar_usuario_id(estu_id)    #Error con buscar usuario
                     if estudiante:
                         curso.agregar_estudiante(estudiante)
 

@@ -13,7 +13,7 @@ class Sistema:
 
     def limpiar(self):
         os.system('cls' if os.name == 'nt' else 'clear')
-
+        
     def menu_principal(self):
         print("\n=-=-= Cursos Online =-=-=\n1. Iniciar sesion\n2. Registrarse\n3. Salir")
         return input("seleccione una opccion: ")
@@ -33,7 +33,8 @@ class Sistema:
 
         while True:
             correo = input("Ingrese su correo electronico: ")
-            if "@" not in correo:
+            if "@" not in correo and "." not in correo: #Se agrega otro tipo de variacion
+
                 print("Correo no reconocido")
             elif self.gestor_usuarios.buscar_usuario(correo):
                 print("Ya existe una cuenta con ese correo")
@@ -62,8 +63,9 @@ class Sistema:
         if usuario_encontrado and usuario_encontrado.contrasenia == contrasenia:
             self.usuario_actual = usuario_encontrado
             print(f"\n¡Bienvenido, {self.usuario_actual.nombre} :D!")
-            input("Presione Enter para continuar.")
             self.mostrar_menu()
+            input("Presione Enter para continuar.")
+            
         else:
             print("\nError: Correo o contraseña incorrectos.")
             input("Presione Enter para volver al menú principal.")
@@ -149,7 +151,7 @@ class Sistema:
 
     def menu_instructor(self):
         while self.usuario_actual:
-            self.limpiar_pantalla()
+            self.limpiar()  #Cambio de variables debido a que no existia limpiar pantalla
             print(f"\n=-=-= Menú del Instructor: {self.usuario_actual.nombre} =-=-=\n1. Crear un nuevo curso\n2. Ver mis cursos\n3. Agregar evaluación a un curso")
             print("4. Registrar calificación de un estudiante\n5. Generar reporte de estudiantes con promedio bajo\n6. Cerrar Sesión")
             opcion = input("Seleccione una opción: ")
@@ -311,7 +313,8 @@ class Sistema:
         promedios = Reportes.promedio_por_estudiante(curso)
         estudiantes_bajos = Reportes.estudiantes_con_promedio_bajo(self.gestor_usuarios, promedios, limite)
 
-        self.limpiar_pantalla()
+        self.limpiar()  #Habia un error de atribute error, en donde no existia la funcion limpiar pantalla.
+
         print(f"--- Reporte para el curso: {curso.nombre} ---")
         if estudiantes_bajos:
             print(f"Estudiantes con promedio por debajo de {limite}:")

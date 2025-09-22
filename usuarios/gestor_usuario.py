@@ -31,10 +31,10 @@ class GestorUsuarios:
                 return usuario
         return None
     
-    def buscar_usuario_id(self, usuario_id):
+    def buscar_usuario_id(self, usuario_id):    #En este bloque de codigo la funcion usuarios no existe debe ser usuario.
         for usuario in self.usuarios:
-            if usuario.id_usuarios == usuario_id:
-                return usuario_id
+            if usuario.id_usuario == usuario_id:   #Se cambia usuario.id_usuarios por usuario
+                return usuario   #Se regresa solo el usuario no el id
         return None
 
     def mostrar_usuarios(self):
