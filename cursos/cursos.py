@@ -14,7 +14,7 @@ class Curso:
 
 
     @property
-    def nombre(self):
+    def nombre(self):   #Variable nombre
         return self.__nombre
     
     @nombre.setter
