@@ -7,7 +7,7 @@ class Reportes:
             print(f"Error: EL curso no tiene evaliaciones para calcular.")
             return promedios
         
-        for estudiantes in curso.estuduantes:
+        for estudiantes in curso.estudiantes:   #errores en el nombre
             total_calificiones = 0
             num_calificaciones = 0
             for evalu in curso.evaluaciones:
@@ -26,7 +26,7 @@ class Reportes:
         estudiante_prom_bajo = []
         for estudiante_id, promedio in promedios.items():
             if promedio < limite:
-                estudiante = gesotr_usuarios.buscar_usario_id(estudiante_id)
+                estudiante = gesotr_usuarios.buscar_usuario_id(estudiante_id)
                 if estudiante:
                     reporte_info = f"- {estudiante.nombre} (ID: {estudiante_id}): Promedio {promedio}"
                     estudiante_prom_bajo.append(reporte_info)

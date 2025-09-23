@@ -54,7 +54,7 @@ class Curso:
         if not valor or not str(valor):
             raise ValueError("El codigo del curso no puede estar vacio.")
         self.__codigo = str(valor)
-   
+
     def agregar_estudiante(self, estudiante):
         if estudiante not in self.estudiantes:
             self.estudiantes.append(estudiante)
@@ -64,7 +64,8 @@ class Curso:
         
     def agregar_evaluacion(self, evaluacion):
         self.evaluaciones.append(evaluacion)
-        print(f"Evaluacion {evaluacion.nombre}, agregada al curso {self.nombre}")
+        print(f"Evaluacion {evaluacion.titulo}, agregada al curso {self.nombre}") #Cambio de una variable
+
         
     def eliminar_estudiante(self, estudiante):
         if estudiante in self.estudiantes:
@@ -73,7 +74,7 @@ class Curso:
         else:
             raise ValueError(f"El estudainte {estudiante.nombre} no se encuentra en este curso")
 
-    def mostrar_info(self):
+    def mostrar_informacion(self):  #Nombre de la variable corregida
         nombre_instructor = self.instructor.nombre if self.instructor else "no asignado"
         info = (f"Curso: {self.nombre} (Código: {self.codigo})\n"
                 f"  Descripción: {self.descripcion}\n"
@@ -92,7 +93,9 @@ class Curso:
         return "\n".join(linea)
     
     def __str__(self):
-        return self.mostrar_info()
+        return self.mostrar_informacion()   #Nombre de la variable erroneo
+
+
     
     def to_dict(self):
         return {

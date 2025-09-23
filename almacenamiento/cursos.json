@@ -1,0 +1,25 @@
+[
+    {
+        "nombre": "mate",
+        "descripcion": "ecuaciones",
+        "codigo": "MATE-01",
+        "instructor_id": "I001",
+        "estudiante_ids": [
+            "E001"
+        ],
+        "evaluaciones": [
+            {
+                "tipo": "Examen",
+                "titulo": "MATE",
+                "descripcion": "ejercicios",
+                "fecha_entrega": "2000-05-14",
+                "calificaciones": [
+                    {
+                        "estudiante_id": "E001",
+                        "nota": 40
+                    }
+                ]
+            }
+        ]
+    }
+]

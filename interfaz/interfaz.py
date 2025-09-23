@@ -159,7 +159,7 @@ class Sistema:
             if opcion == "1":
                 self.crear_nuevo_curso()
             elif opcion == "2":
-                self.ver_mis_cursos_instructor()
+                self.ver_mis_cursos_instructor()    #Cambio de variables para llamar a la correcta
             elif opcion == "3":
                 self.agregar_evaluacion_a_curso()
             elif opcion == "4":
@@ -218,6 +218,7 @@ class Sistema:
         print("\n--- Agregar evaluacion al curso ---")
         self.ver_mis_cursos_instructor()
         
+        self.limpiar()  #Se agrega una linea de codigo para limpiar los cursos
         codigo_curso = input("\nIngrese el codigo del curso para poder crear la evaluacion: ")
 
         while True:
@@ -311,7 +312,7 @@ class Sistema:
         
         print("\nGenerando reporte...")
         promedios = Reportes.promedio_por_estudiante(curso)
-        estudiantes_bajos = Reportes.estudiantes_con_promedio_bajo(self.gestor_usuarios, promedios, limite)
+        estudiantes_bajos = Reportes.promedios_bajo(self.gestor_usuarios, promedios, limite)
 
         self.limpiar()  #Habia un error de atribute error, en donde no existia la funcion limpiar pantalla.
 

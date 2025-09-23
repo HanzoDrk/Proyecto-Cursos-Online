@@ -1,0 +1,23 @@
+[
+    {
+        "id_usuario": "I001",
+        "nombre": "luis",
+        "correo": "luis@gmail.com",
+        "contrasenia": "1",
+        "rol": "Instructor"
+    },
+    {
+        "id_usuario": "I002",
+        "nombre": "luis",
+        "correo": "jose@gmail.com",
+        "contrasenia": "1",
+        "rol": "Instructor"
+    },
+    {
+        "id_usuario": "E001",
+        "nombre": "mario",
+        "correo": "mario@gmail.com",
+        "contrasenia": "si",
+        "rol": "Estudiante"
+    }
+]

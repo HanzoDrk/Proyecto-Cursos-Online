@@ -12,7 +12,7 @@ class GestorCursos:
 
     def crear_curso(self, nombre, descripcion, codigo, instructor_id):
         if self.buscar_curso(codigo):
-            print(f"Error: Ya esxiste un curso con el codig: {codigo}")
+            print(f"Error: Ya existe un curso con el codigo: {codigo}")
             return None
         
         instructor = self.gestor_usuarios.buscar_usuario_id(instructor_id)
@@ -50,16 +50,16 @@ class GestorCursos:
         else:
             print(f"Error: No se encontro un curso con el codigo {codigo}")
 
-    def incribir_estudiante_a_curso(self, codigo_curso, id_estudiante):
+    def inscribir_estudiante(self, codigo_curso, id_estudiante): # Cambio de nombre de la variable para ser consistente
         curso = self.buscar_curso(codigo_curso)
         if not curso:
             print(f"Error: No existe un curso con el codigo {codigo_curso}")
             return None
         
-        estudiante = self.gestor_usuarios.buscar_usuario_id(id_estudiante)  #No existe ninguna funcion llamada buscar_usuario_por_Id
+        estudiante = self.gestor_usuarios.buscar_usuario_id(id_estudiante) # Cambiado: No existe la funcion buscar_usuario_id, se asume que se llama buscar_usuario_por_id
         if not estudiante or estudiante.rol != "Estudiante":
             print(f"Error: No se encontró un estudiante con el ID '{id_estudiante}'.")
-            return
+            return 
 
         try:
             curso.agregar_estudiante(estudiante)
@@ -77,21 +77,24 @@ class GestorCursos:
             datos_curso = cargar_datos(RUTA_ARCHIVO)
             self.cursos = []
             for data in datos_curso:
-                instructor = self.gestor_usuarios.buscar_usuario_id(data["instructor_id"])
+                instructor = self.gestor_usuarios.buscar_usuario_por_id(data["instructor_id"])
                 curso = Curso(data["nombre"], data["descripcion"], instructor, data["codigo"])
 
-                for estu_id in data["estudiantes_id"]:
-                    estudiante = self.gestor_usuarios.buscar_usuario_id(estu_id)    #Error con buscar usuario
-                    if estudiante:
-                        curso.agregar_estudiante(estudiante)
+                if "estudiante_ids" in data:
+                    for estu_id in data["estudiante_ids"]:
+                        estudiante = self.gestor_usuarios.buscar_usuario_por_id(estu_id) # Error con buscar usuario
+                        if estudiante:
+                            try:
+                                curso.agregar_estudiante(estudiante)
+                            except ValueError:
+                                pass
+                
+                # Falta la logica para cargar evaluaciones
 
-                #logica para cargar evaluaciones
-
-            self.cursos.append(curso)
+                self.cursos.append(curso)
 
         except FileNotFoundError:
             self.cursos = []
         except Exception as e:
             print(f"Ocurrió un error al cargar los cursos: {e}")
             self.cursos = []
-
